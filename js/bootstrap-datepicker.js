@@ -1,14 +1,14 @@
 /* =========================================================
  * bootstrap-datepicker.js
  * Repo: https://github.com/uxsolutions/bootstrap-datepicker/
- * Demo: https://uxsolutions.github.io/bootstrap-datepicker/
+ * Demo: https://eternicode.github.io/bootstrap-datepicker/
  * Docs: https://bootstrap-datepicker.readthedocs.org/
  * =========================================================
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  *
- * https://www.apache.org/licenses/LICENSE-2.0
+ * http://www.apache.org/licenses/LICENSE-2.0
  *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
@@ -74,7 +74,7 @@
 			replace: function(new_array){
 				if (!new_array)
 					return;
-				if (!Array.isArray(new_array))
+				if (!$.isArray(new_array))
 					new_array = [new_array];
 				this.clear();
 				this.push.apply(this, new_array);
@@ -116,15 +116,9 @@
 		this.isInput = this.element.is('input');
 		this.inputField = this.isInput ? this.element : this.element.find('input');
 		this.component = this.element.hasClass('date') ? this.element.find('.add-on, .input-group-addon, .input-group-append, .input-group-prepend, .btn') : false;
-		if (this.component && this.component.length === 0){
+		if (this.component && this.component.length === 0)
 			this.component = false;
-    }
-
-		if (this.o.isInline === null){
-			this.isInline = !this.component && !this.isInput;
-		} else {
-			this.isInline = this.o.isInline;
-		}
+		this.isInline = !this.component && this.element.is('div');
 
 		this.picker = $(DPGlobal.template);
 
@@ -195,7 +189,7 @@
 		},
 
 		_resolveDaysOfWeek: function(daysOfWeek){
-			if (!Array.isArray(daysOfWeek))
+			if (!$.isArray(daysOfWeek))
 				daysOfWeek = daysOfWeek.split(/[,\s]*/);
 			return $.map(daysOfWeek, Number);
 		},
@@ -282,7 +276,7 @@
 			o.daysOfWeekHighlighted = this._resolveDaysOfWeek(o.daysOfWeekHighlighted||[]);
 
 			o.datesDisabled = o.datesDisabled||[];
-			if (!Array.isArray(o.datesDisabled)) {
+			if (!$.isArray(o.datesDisabled)) {
 				o.datesDisabled = o.datesDisabled.split(',');
 			}
 			o.datesDisabled = $.map(o.datesDisabled, function(d){
@@ -424,6 +418,9 @@
 				}],
 				[this.picker, '.prev, .next', {
 					click: $.proxy(this.navArrowsClick, this)
+				}],
+				[this.picker, '.prevy, .nexty', {
+					click: $.proxy(this.navYArrowsClick, this)
 				}],
 				[this.picker, '.day:not(.disabled)', {
 					click: $.proxy(this.dayCellClick, this)
@@ -589,15 +586,16 @@
 
 		clearDates: function(){
 			this.inputField.val('');
-			this._trigger('changeDate');
 			this.update();
+			this._trigger('changeDate');
+
 			if (this.o.autoclose) {
 				this.hide();
 			}
 		},
 
 		setDates: function(){
-			var args = Array.isArray(arguments[0]) ? arguments[0] : arguments;
+			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.update.apply(this, args);
 			this._trigger('changeDate');
 			this.setValue();
@@ -605,7 +603,7 @@
 		},
 
 		setUTCDates: function(){
-			var args = Array.isArray(arguments[0]) ? arguments[0] : arguments;
+			var args = $.isArray(arguments[0]) ? arguments[0] : arguments;
 			this.setDates.apply(this, $.map(args, this._utc_to_local));
 			return this;
 		},
@@ -1057,7 +1055,7 @@
 
 				//Check if uniqueSort exists (supported by jquery >=1.12 and >=2.2)
 				//Fallback to unique function for older jquery versions
-				if (typeof $.uniqueSort === "function") {
+				if ($.isFunction($.uniqueSort)) {
 					clsName = $.uniqueSort(clsName);
 				} else {
 					clsName = $.unique(clsName);
@@ -1271,6 +1269,15 @@
 			}
 			this.viewDate = this.moveMonth(this.viewDate, dir);
 			this._trigger(DPGlobal.viewModes[this.viewMode].e, this.viewDate);
+			this.fill();
+		},
+
+		navYArrowsClick: function(e){
+            var $target = $(e.currentTarget);
+			var dir = $target.hasClass('prevy') ? -1 : 1;
+				dir *= DPGlobal.viewModes[1].navStep;
+			this.viewDate = this.moveYear(this.viewDate, dir);
+			this._trigger(DPGlobal.viewModes[1].e, this.viewDate);
 			this.fill();
 		},
 
@@ -1509,6 +1516,9 @@
 		},
 
 		setViewMode: function(viewMode){
+			this.picker.find('.prevy').toggleClass('not-needed', viewMode != 0);
+			this.picker.find('.nexty').toggleClass('not-needed', viewMode != 0);
+
 			this.viewMode = viewMode;
 			this.picker
 				.children('div')
@@ -1589,12 +1599,12 @@
 
 			if (new_date < this.dates[j]){
 				// Date being moved earlier/left
-				while (j >= 0 && new_date < this.dates[j] && (this.pickers[j].element.val() || "").length > 0) {
+				while (j >= 0 && new_date < this.dates[j]){
 					this.pickers[j--].setUTCDate(new_date);
 				}
 			} else if (new_date > this.dates[k]){
 				// Date being moved later/right
-				while (k < l && new_date > this.dates[k] && (this.pickers[k].element.val() || "").length > 0) {
+				while (k < l && new_date > this.dates[k]){
 					this.pickers[k++].setUTCDate(new_date);
 				}
 			}
@@ -1708,7 +1718,6 @@
 		endDate: Infinity,
 		forceParse: true,
 		format: 'mm/dd/yyyy',
-		isInline: null,
 		keepEmptyValues: false,
 		keyboardNavigation: true,
 		language: 'en',
@@ -1733,7 +1742,9 @@
 		title: '',
 		templates: {
 			leftArrow: '&#x00AB;',
-			rightArrow: '&#x00BB;'
+			rightArrow: '&#x00BB;',
+			yleftArrow: '&#x21E4;',
+			yrightArrow: '&#x21E5;'
 		},
     showWeekDays: true
 	};
@@ -1960,9 +1971,11 @@
 			                '<th colspan="7" class="datepicker-title"></th>'+
 			              '</tr>'+
 							'<tr>'+
+								'<th class="prevy">'+defaults.templates.yleftArrow+'</th>'+
 								'<th class="prev">'+defaults.templates.leftArrow+'</th>'+
-								'<th colspan="5" class="datepicker-switch"></th>'+
+								'<th colspan="3" class="datepicker-switch"></th>'+
 								'<th class="next">'+defaults.templates.rightArrow+'</th>'+
+								'<th class="nexty">'+defaults.templates.yrightArrow+'</th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
@@ -1978,6 +1991,7 @@
 	DPGlobal.template = '<div class="datepicker">'+
 							'<div class="datepicker-days">'+
 								'<table class="table-condensed">'+
+								    Array(7).fill('<col style="width: calc(100% / 7);" />').join('')+
 									DPGlobal.headTemplate+
 									'<tbody></tbody>'+
 									DPGlobal.footTemplate+
@@ -2026,7 +2040,7 @@
 
 	/* DATEPICKER VERSION
 	 * =================== */
-	$.fn.datepicker.version = '1.10.0';
+	$.fn.datepicker.version = '1.9.0';
 
 	$.fn.datepicker.deprecated = function(msg){
 		var console = window.console;

@@ -1,7 +1,7 @@
 /*!
- * Datepicker for Bootstrap v1.10.0 (https://github.com/uxsolutions/bootstrap-datepicker)
+ * Datepicker for Bootstrap v1.9.0 (https://github.com/uxsolutions/bootstrap-datepicker)
  *
- * Licensed under the Apache License v2.0 (https://www.apache.org/licenses/LICENSE-2.0)
+ * Licensed under the Apache License v2.0 (http://www.apache.org/licenses/LICENSE-2.0)
  */
 
 .datepicker {
@@ -414,22 +414,37 @@
 }
 .datepicker .datepicker-switch {
   width: 145px;
+  white-space: nowrap;
 }
 .datepicker .datepicker-switch,
 .datepicker .prev,
+.datepicker .prevy,
 .datepicker .next,
+.datepicker .nexty,
 .datepicker tfoot tr th {
   cursor: pointer;
 }
 .datepicker .datepicker-switch:hover,
 .datepicker .prev:hover,
+.datepicker .prevy:hover,
 .datepicker .next:hover,
+.datepicker .nexty:hover,
 .datepicker tfoot tr th:hover {
   background: #eee;
 }
 .datepicker .prev.disabled,
-.datepicker .next.disabled {
+.datepicker .prevy.disabled,
+.datepicker .next.disabled,
+.datepicker .nexty.disabled {
   visibility: hidden;
+}
+.datepicker .prev.not-needed,
+.datepicker .prevy.not-needed,
+.datepicker .next.not-needed,
+.datepicker .nexty.not-needed {
+  visibility: hidden;
+  opacity: 0;
+  pointer-events: none;
 }
 .datepicker .cw {
   font-size: 10px;

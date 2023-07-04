@@ -1,6 +1,6 @@
 /**
  * Albanian translation for bootstrap-datepicker
- * Tomor Pupovci <https://www.github.com/ttomor>
+ * Tomor Pupovci <http://www.github.com/ttomor>
  */
 ;(function($){
 	$.fn.datepicker.dates['sq'] = {
@@ -16,3 +16,4 @@
     clear: "Pastro"
 	};
 }(jQuery));
+

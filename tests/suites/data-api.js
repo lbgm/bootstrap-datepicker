@@ -32,7 +32,7 @@ test('DATA-API: data-provide="datepicker" on component', function(){
     comp.remove();
 
     comp = $(html).appendTo('#qunit-fixture');
-    comp.find('.add-on').focusin();
+    comp.find('.add-on').focus();
     ok(comp.data('datepicker'), 'append component initialized by "focus" event on add-on');
     comp.remove();
 
@@ -57,7 +57,7 @@ test('DATA-API: data-provide="datepicker" on component', function(){
     comp.remove();
 
     comp = $(html).prependTo('#qunit-fixture');
-    comp.find('.add-on').focusin();
+    comp.find('.add-on').focus();
     ok(comp.data('datepicker'), 'prepend component initialized by "focus" event on add-on');
     comp.remove();
 
@@ -93,7 +93,7 @@ test('DATA-API: data-provide="datepicker" on rangepicker', function(){
             '</div>';
 
     comp = $(html).appendTo('#qunit-fixture');
-    comp.find('input:first').focusin();
+    comp.find('input:first').focus();
     ok(comp.data('datepicker'), 'range initialized by "focus" event on first input');
     comp.remove();
 
@@ -103,7 +103,7 @@ test('DATA-API: data-provide="datepicker" on rangepicker', function(){
     comp.remove();
 
     comp = $(html).appendTo('#qunit-fixture');
-    comp.find('input:last').focusin();
+    comp.find('input:last').focus();
     ok(comp.data('datepicker'), 'range initialized by "focus" event on last input');
     comp.remove();
 

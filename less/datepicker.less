@@ -177,11 +177,14 @@
 
 	.datepicker-switch {
 		width: 145px;
+		white-space: nowrap;
 	}
 
 	.datepicker-switch,
 	.prev,
+	.prevy,
 	.next,
+	.nexty,
 	tfoot tr th {
 		cursor: pointer;
 		&:hover {
@@ -189,9 +192,15 @@
 		}
 	}
 
-	.prev, .next {
+	.prev, .prevy, .next, .nexty {
 		&.disabled {
 			visibility: hidden;
+		}
+
+		&.not-needed {
+			visibility: hidden;
+			opacity: 0;
+			pointer-events: none;
 		}
 	}
 
