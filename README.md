@@ -40,3 +40,9 @@ $ yarn install
 $ [sudo] npm install --global grunt-cli
 $ npm install
 ```
+
+## Build
+
+```sh
+% npx grunt --force dist-js # build js
+% npx grunt --force dist-css # build css
